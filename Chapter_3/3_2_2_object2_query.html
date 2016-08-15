@@ -1,0 +1,67 @@
+<!doctype html>
+  <head>
+    <meta charset="utf-8">
+
+    <title>My Parse App</title>
+    <meta name="description" content="My Parse App">
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript" src="http://www.parsecdn.com/js/parse-latest.js"></script>
+  </head>
+  <body>
+    
+    <script type="text/javascript">
+      Parse.initialize("myAppId");
+      Parse.serverURL = 'http://localhost:1337/parse'
+    
+      var GameScore = Parse.Object.extend("GameScore");
+      var query = new Parse.Query(GameScore);
+      
+      // query.get("NfdsM4b0Vm", {
+      //   success: function(gameScore) {
+      //     var score = gameScore.get("score");
+      //     alert(score);
+      //   },
+      //   error: function(object, error) {
+      //   }
+      // });
+      
+      //get and save(for modify)
+      // query.get("NfdsM4b0Vm", {
+      //   success: function(gameScore) {
+      //     gameScore.set("playerName", "adam");
+      //     gameScore.save();
+      //   },
+      //   error: function(object, error) {
+          
+      //   }
+      // });
+      
+      //delete data
+      // query.get("NfdsM4b0Vm", {
+      //   success: function(gameScore) {
+      //     gameScore.unset("playerName");
+      //     gameScore.save();
+      //   },
+      //   error: function(object, error) {
+          
+      //   }
+      // });
+    
+    
+      //delete row
+      query.get("NfdsM4b0Vm", {
+        success: function(gameScore) {
+          // The object was retrieved successfully.
+          gameScore.destroy();
+        },
+        error: function(object, error) {
+          
+        }
+      }); 
+
+    </script>
+  </body>
+</html>

@@ -1,0 +1,43 @@
+<!doctype html>
+  <head>
+    <meta charset="utf-8">
+
+    <title>My Parse App</title>
+    <meta name="description" content="My Parse App">
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js">
+</script>
+    <script type="text/javascript" src="http://www.parsecdn.com/js/parse-latest.js">
+</script>
+  </head>
+
+  <body>
+    <div style="word-break:break-all;" class="success"> </div>
+
+    <script type="text/javascript">
+      Parse.initialize("myAppId");
+      Parse.serverURL = 'http://localhost:1337/parse' 
+
+      var user = new Parse.User();
+      user.set("username", "jacklee_js");
+      user.set("password", "1234");
+      user.set("email", "email@example.com");
+
+      var data = {"phone":"415-392-0202"}
+
+      user.signUp( data, {
+        success: function(user) {
+          
+          alert("User create success")
+        },
+        error: function(user, error) {
+          
+          alert("Error: " + error.code + " " + error.message);
+        }
+      });
+    </script>
+  </body>
+
+</html>      

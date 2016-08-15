@@ -1,0 +1,103 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+  </head>
+
+  <body>
+      <div style="word-break:break-all;" class="success">
+      </div>
+    </div>
+
+    <script type="text/javascript">
+
+      function login()
+      {
+        $.ajax({
+          url: 'http://localhost:1337/parse/login?username=jacklee&password=1234',
+          type: 'GET',
+          headers: 
+              {
+                "X-Parse-Application-Id": "myAppId",
+                 
+              },
+          success: function(data){
+              createData(data.sessionToken, data.objectId);
+          }
+        });   
+      }
+
+      function createData(token, objectId)
+      {
+        var dataObj = new Object();
+        var ACL = new Object();
+
+        dataObj["name"] = "jack2";
+        dataObj["age"] = 20;
+        ACL[objectId] = {"read":true, "write":true}
+        dataObj["ACL"] = ACL
+
+        $.ajax({
+          url: 'http://localhost:1337/parse/classes/Student',
+          type: 'POST',
+          contentType : "application/json",
+          data: JSON.stringify(dataObj),
+          headers: 
+              {
+                "X-Parse-Application-Id": "myAppId",
+              },
+          success: function(data){
+              nosessionGet();
+              sessionGet(token);
+          },
+          error : function(data)
+          {
+            console.log(data);
+          }
+        });   
+      }
+
+
+      function nosessionGet()
+      {
+
+        $.ajax({
+          url: 'http://localhost:1337/parse/classes/Student',
+          type: 'GET',
+          headers: 
+              {
+                "X-Parse-Application-Id":  "myAppId",
+                 
+              },
+          success: function(data){
+              $(".success").after("nosessionGet : " +  data.results.length + "<br>")
+          }
+        });   
+      }
+
+      function sessionGet(token)
+      {
+
+        $.ajax({
+          url: 'http://localhost:1337/parse/classes/Student',
+          type: 'GET',
+          headers: 
+              {
+                "X-Parse-Application-Id": "myAppId",
+                "X-Parse-Session-Token": token
+
+              },
+          success: function(data){
+              $(".success").after("sessionGet : " +  data.results.length + "<br>")
+          }
+        });  
+      }      
+
+
+      login()
+    </script>
+  </body>
+</html>
+
+

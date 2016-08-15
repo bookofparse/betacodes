@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <script type="text/javascript" 
+      src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js">
+    </script>
+  </head>
+
+  <body>
+    <div style="word-break:break-all;" class="success">
+    </div>
+
+    <script type="text/javascript">
+      $.ajax({
+          url: 'http://localhost:1337/parse/classes/TestObject?where={"foo":"bar"}',
+          type: 'GET',
+          headers: 
+              {
+                "X-Parse-Application-Id": "myAppId",
+              },
+          success: function(data){
+              $(".success").html(JSON.stringify(data)).show();
+          }
+      });   
+    </script>
+  </body>
+</html>

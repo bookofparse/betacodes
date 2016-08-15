@@ -1,0 +1,65 @@
+<!doctype html>
+  <head>
+    <meta charset="utf-8">
+
+    <title>Login</title>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js">
+</script>
+    <script type="text/javascript" src="http://www.parsecdn.com/js/parse-latest.js">
+</script>
+  </head>
+
+  <body>
+    <div id="login">
+      <input type="text" id="id">
+      <input type="password" id="password">
+      <input type="button" value="LOGIN" onclick="login()">
+    </div>
+    <script type="text/javascript">
+      Parse.initialize("myAppId");
+      Parse.serverURL = 'http://localhost:1337/parse'; 
+      
+function createMyData(){
+        var Student = Parse.Object.extend("Student");
+        var newStudent = new Student();
+        newStudent.set("age", 25);
+        newStudent.set("name", "Eric");
+        
+        var acl = new Parse.ACL();
+        acl.setReadAccess(Parse.User.current(), true);
+        acl.setWriteAccess(Parse.User.current(), true);
+        newStudent.setACL(acl);
+
+        //newStudent.setACL(new Parse.ACL(Parse.User.current()));
+
+        newStudent.save(null, {
+          success: function(data) {
+              alert("create success");
+          },
+          error: function(data, error) {
+              alert("create error : " + error.message);
+          }
+        });
+      } 
+      function login(){
+        var id = $("#id").val()
+        var password = $("#password").val()
+        
+        if(Parse.User.current()){
+          Parse.User.logOut()
+        }
+
+        Parse.User.logIn(id, password, {
+          success: function(user) {
+              alert("login success");
+              createMyData();
+          },
+          error: function(user, error) {
+              alert("login error : " + error.message);
+          }
+        });
+      }
+</script>
+
+  </body>
+</html>

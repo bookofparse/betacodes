@@ -1,0 +1,39 @@
+<!doctype html>
+  <head>
+    <meta charset="utf-8">
+
+    <title>My Parse App</title>
+    <meta name="description" content="My Parse App">
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript" src="http://www.parsecdn.com/js/parse-latest.js"></script>
+  </head>
+  <body>
+    
+    <script type="text/javascript">
+      Parse.initialize("myAppId");
+      Parse.serverURL = 'http://localhost:1337/parse'
+
+      var number = 42;
+      var string = "the number is " + number;
+      var date = new Date();
+      var array = [string, number];
+      var object = { number: number, string: string };
+
+      var DataTypeTest = Parse.Object.extend("DataTypeTest");
+      var dataTypeTest = new DataTypeTest();
+      dataTypeTest.set("myNumber", number);
+      dataTypeTest.set("myString", string);
+      dataTypeTest.set("myDate", date);
+      dataTypeTest.set("myArray", array);
+      dataTypeTest.set("myObject", object);
+      dataTypeTest.set("myNull", null);
+      dataTypeTest.save();
+
+
+
+    </script>
+  </body>
+</html>

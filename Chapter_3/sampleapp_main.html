@@ -1,0 +1,79 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title> Main </title>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js">
+    </script>
+    <script type="text/javascript" src="http://www.parsecdn.com/js/parse-latest.js">
+    </script>
+</head>
+
+  <body>
+    <div id="info">
+      <span id="id"></span>
+      <input type="button" value="LOGOUT" onclick="logout()">
+    </div>
+    <h3> Collect Click Position Log</h3>
+    <div id="log">
+    </div>
+    <script type="text/javascript">
+      Parse.initialize("myAppId");
+      Parse.serverURL = 'http://localhost:1337/parse';
+      
+      $(document).ready(function(){
+        if(!Parse.User.current()){
+          alert("Login Please");
+          window.location = "sampleapp_index.html"
+        }
+        else{
+          $("#id").html("welcome " + Parse.User.current().get("username") + " " );
+          var ClickPosition = Parse.Object.extend("ClickPosition");
+          var query = new Parse.Query(ClickPosition);
+
+          query.find({
+            success: function(list) {
+              var dataStr = "";
+              for(index in list)
+              {
+                var posStr = "X : " + list[index].get("posX") + 
+"  "+ "Y : " + list[index].get("posX")
+                dataStr = dataStr + posStr + " save success <br>";
+              }
+              $("#log").html(dataStr);
+            }
+          });
+        }
+      });
+
+      function logout(){
+        Parse.User.logOut();
+        window.location = "sampleapp_index.html";
+      }
+      function savePositionLog(posX, posY)
+      {
+        var posStr = "X : " + posX + "  "+ "Y : " + posY
+        var ClickPosition = Parse.Object.extend("ClickPosition");
+        var position = new ClickPosition();
+        position.setACL(new Parse.ACL(Parse.User.current()));
+
+        position.set("posX", posX);
+        position.set("posY", posY);              
+        
+        position.save(null, {
+          success: function(data) {
+            $("#log").html($("#log").html() + posStr + " save success <br>");
+          },
+          error: function(data, error) {
+            $("#log").html($("#log").html() + posStr + " save error : " + 
+error.message + "<br>");
+          }
+        });
+      }
+
+      $(document).click(function(data){
+         savePositionLog(data.pageX, data.pageY)
+      });
+      
+    </script>
+  </body>
+</html>
