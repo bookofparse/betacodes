@@ -15,7 +15,7 @@
       function login()
       {
         $.ajax({
-          url: 'http://localhost:1337/parse/login?username=jacklee&password=1234',
+          url: 'https://whispering-dusk-42348.herokuapp.com/parse/login?username=jack&password=1234',
           type: 'GET',
           headers: 
               {
@@ -24,6 +24,11 @@
               },
           success: function(data){
               createData(data.sessionToken, data.objectId);
+          },
+          error:function(data,errors)
+          {
+            alert(data);
+            console.log(data)
           }
         });   
       }
@@ -32,14 +37,14 @@
       {
         var dataObj = new Object();
         var ACL = new Object();
-
+        alert(1);
         dataObj["name"] = "jack2";
         dataObj["age"] = 20;
         ACL[objectId] = {"read":true, "write":true}
         dataObj["ACL"] = ACL
 
         $.ajax({
-          url: 'http://localhost:1337/parse/classes/Student',
+          url: 'https://whispering-dusk-42348.herokuapp.com/parse/classes/Student',
           type: 'POST',
           contentType : "application/json",
           data: JSON.stringify(dataObj),
@@ -63,7 +68,7 @@
       {
 
         $.ajax({
-          url: 'http://localhost:1337/parse/classes/Student',
+          url: 'https://whispering-dusk-42348.herokuapp.com/parse/classes/Student',
           type: 'GET',
           headers: 
               {
@@ -80,7 +85,7 @@
       {
 
         $.ajax({
-          url: 'http://localhost:1337/parse/classes/Student',
+          url: 'https://whispering-dusk-42348.herokuapp.com/parse/classes/Student',
           type: 'GET',
           headers: 
               {

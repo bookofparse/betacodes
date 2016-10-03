@@ -1,0 +1,90 @@
+<!doctype html>
+<head>
+  <meta charset="utf-8">
+
+  <title>My Parse App</title>
+  <meta name="description" content="My Parse App">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js">
+  </script>
+  <script type="text/javascript" src="http://www.parsecdn.com/js/parse-latest.js"></script>
+  </script>
+</head>
+<body>
+  <nav class="navbar navbar-default">
+    <form class="navbar-form text-center">
+       User ID <input type="text" id="id" value="test_1" class="form-control" >
+       Room Name <input type="text" id="room" value="room_1" class="form-control" >
+       <a type="button "class="btn btn-info" onclick="on()" > ON </a>
+       <a type="button "class="btn btn-info" onclick="off()" > OFF </a>
+    </form>
+  </nav>
+  <div id="off" style="text-align: center;display: none;">
+    <img src="https://cdn3.iconfinder.com/data/icons/developerkit/png/Light%20Bulb%20Off.png" />
+  </div>
+  <div id="on" style="text-align: center;display: none;">
+    <img src="https://cdn3.iconfinder.com/data/icons/developerkit/png/Light%20Bulb%20On.png" />
+  </div>
+  <script>
+    Parse.initialize("myAppId");
+    Parse.serverURL = '';
+    getState();
+    function on(){
+      sendRequest(1);
+    }
+
+    function off(){
+      sendRequest(0);
+    }
+    function changeImg(state)
+    {
+      if(state==1){
+        $("#on").show();
+        $("#off").hide();
+      }
+      else{
+        $("#off").show();
+        $("#on").hide();
+      }
+    }
+    function getState()
+    {
+      var Plug = Parse.Object.extend("iot_switch");
+      var query = new Parse.Query(Plug);
+      query.equalTo("usrId", $("#id").val());
+      query.equalTo("locate", $("#room").val());
+      query.limit(1);
+      query.addDescending("updatedAt");
+      query.find({
+          success: function(results) {
+            if(results.length > 0)
+              changeImg(parseInt(results[0].get("state")));
+          },
+          error: function(error) {
+            alert("Error: " + error.code + " " + error.message);
+          }
+        });
+    }
+    function sendRequest(state)
+    {
+      var Plug = Parse.Object.extend("iot_switch");
+      var plugObject = new Plug();
+      plugObject.save({
+                  usrId: $("#id").val(), locate:$("#room").val(),
+                  state:state, sw_rqst:1}, {
+        success: function(object) {
+          alert("Success!")
+          changeImg(state)
+        },
+        error: function(model, error) {
+          alert("Error: " + error.code + " " + error.message);
+        }
+      });
+    }
+  </script>
+</body>
+</html>

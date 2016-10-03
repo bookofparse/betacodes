@@ -1,0 +1,115 @@
+<!doctype html>
+<head>
+  <meta charset="utf-8">
+
+  <title>My Parse App</title>
+  <meta name="description" content="My Parse App">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js">
+  </script>
+  <script type="text/javascript" src="http://www.parsecdn.com/js/parse-latest.js"></script>
+ <script type="text/javascript" src=" https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js">
+ </script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.6/Chart.min.js">
+  </script>
+</head>
+
+<body>
+  
+  <nav class="navbar navbar-default">
+    <form class="navbar-form text-center">
+       User ID <input type="text" id="id" value="test_1" class="form-control" >
+       Dog Name <input type="text" id="name" value="dog_1" class="form-control" style="margin-right: 50px;">
+       Date <input type="text" id="begin" value="2016/06/23" class="form-control"> ~ 
+       <input type="text" id="end" value="2016/06/23" class="form-control" >
+       <a type="button "class="btn btn-info" onclick="loadData()" >LOAD </a>
+    </form>
+  </nav>
+
+  <br>
+  <div style="width:100%;height:400px;">
+  <canvas id="myChart"></canvas>
+  </div>
+  <script type="text/javascript">
+    $("#myChart").hide()
+    var ctx = document.getElementById("myChart");
+    var data = {
+        labels: [],
+        datasets: [
+            {
+                label: "Activity",
+                fill: false,
+                lineTension: 0.1,
+                borderColor: "rgba(75,192,192,1)",
+                pointBorderWidth: 4,
+                data: [],
+            }
+        ]
+    };
+    var settings = {
+        type: 'line',
+        data: data,
+        options: {
+            scales: {
+                xAxes: [{
+                    type: 'time',   
+                }]
+            }
+          }
+    };
+    var scatterChart = new Chart(ctx, settings);
+
+    Parse.initialize("myAppId");
+    Parse.serverURL = ''
+    function loadData()
+    {
+      var iotDogObj = Parse.Object.extend("iot_dog");
+      var query = new Parse.Query(iotDogObj);
+      query.equalTo("usrId", $("#id").val());
+      query.equalTo("dogName", $("#name").val());
+      
+      query.greaterThanOrEqualTo("updatedAt",strToDate($("#begin").val()));
+      query.lessThanOrEqualTo("updatedAt",strToDate($("#end").val(),"end"));
+
+      query.find({
+          success: function(results) {
+            alert("Successfully retrieved " + results.length + " data.");
+            if(results.length == 0)
+              $("#myChart").hide()
+            else
+              $("#myChart").show()
+             scatterChart.data.labels = []
+             scatterChart.data.datasets[0].data = []
+            for (var i = 0; i < results.length; i++) {
+              var object = results[i];
+              scatterChart.data.labels.push(object.get('updatedAt'))
+              scatterChart.data.datasets[0].data.push(object.get('activity'))
+            }
+            scatterChart.update()
+          },
+          error: function(error) {
+            alert("Error: " + error.code + " " + error.message);
+            $("#myChart").hide()
+          }
+        });
+    }
+    function strToDate(str, mode){
+      var year   = parseInt(str.substring(0,4));
+      var month  = parseInt(str.substring(5,7));
+      var day   = parseInt(str.substring(8,10));
+      var ret;
+      if(mode=="end")
+        ret = new Date(year, month-1, day, 23,59,59);
+      else
+        ret = new Date(year, month-1, day);
+    return ret;
+    }
+
+  </script>
+</body>
+
+</html>
