@@ -7,7 +7,6 @@
 
 int main (int argc, char *argv[])
 {
-  int pos = 180;
   if (wiringPiSetup() == -1) exit(1) ;  //init wiringPi
 
   pinMode(OUTPIN, OUTPUT) ;  //set the 0 pin as OUTPUT
@@ -20,7 +19,7 @@ int main (int argc, char *argv[])
     printf("set 0.5mSec \n");
     softPwmWrite(OUTPIN, 5) ;
     delay(1000) ;
-    printf("set 2.0mSec \n");
+    printf("set 2.5mSec \n");
     softPwmWrite(OUTPIN, 25) ;
     delay(1000) ;
   }

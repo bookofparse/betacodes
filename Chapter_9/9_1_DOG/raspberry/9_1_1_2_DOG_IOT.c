@@ -5,7 +5,7 @@
 #include <time.h>
 #include <string.h>
 #include <math.h>
-#define PARSE_URL  "http://whispering-tundra-13887.herokuapp.com/parse"
+#define PARSE_URL  "http://xxx.herokuapp.com/parse"
 #define MPU6050_ID	0x68
 #define MPU6050_ACC_X_H 0x3B
 #define MPU6050_ACC_X_L 0x3C

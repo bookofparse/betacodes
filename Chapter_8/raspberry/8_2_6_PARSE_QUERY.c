@@ -3,7 +3,7 @@
 #include <parse.h>
 #include "cJSON.h"
 #include <string.h>
-#define PARSE_URL  "http:// 192.168.219.106:1337/parse"
+#define PARSE_URL  "http://xxx.herokuapp.com/parse"
 int toggle = -1;
 char tmpObjectId[11];
 

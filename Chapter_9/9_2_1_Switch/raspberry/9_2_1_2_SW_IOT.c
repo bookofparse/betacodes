@@ -5,7 +5,7 @@
 #include <string.h>
 #include <time.h>
 #include <wiringPi.h>  //wiringPi.h ¼±¾ð
-#define PARSE_URL  http://whispering-tundra-13887.herokuapp.com/parse
+#define PARSE_URL  "http://xxx.herokuapp.com/parse"
 #define ON 1
 #define OFF 0
 #define OUTPIN 7

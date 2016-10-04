@@ -1,5 +1,5 @@
-#include<wiringPi.h>
-#include<stdio.h>
+#include <wiringPi.h>
+#include <stdio.h>
 
 #define SW 8
 

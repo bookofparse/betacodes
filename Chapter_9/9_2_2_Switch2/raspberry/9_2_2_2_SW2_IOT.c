@@ -7,7 +7,7 @@
 #include <wiringPi.h>  //wiringPi.h ¼±¾ð
 #include <softPwm.h>
 
-#define PARSE_URL  http://whispering-tundra-13887.herokuapp.com/parse
+#define PARSE_URL  "http://xxx.herokuapp.com/parse"
 #define ON 1
 #define OFF 0
 #define OUTPIN 7
@@ -60,32 +60,33 @@ void mySaveCallback (ParseClient client, int error, int httpStatus, const char* 
       {
 				
         if(objectRqst->valueint == ON) 
-	    {
-	      if(objectState->valueint == sw_state)
 	      {
-		     printf("No CHANGE : state:%d, rqst:%d \n",sw_state, objectState->valueint);
-		  }
+	        if(objectState->valueint == sw_state)
+	        {
+		        printf("No CHANGE : state:%d, rqst:%d \n",sw_state, objectState->valueint);
+		      }
           else
           {
-		    printf("CHANGE : state:%d, rqst:%d \n",sw_state, objectState->valueint);
-		    sw_state = objectState->valueint;
-		    setSw(sw_state);
-	      }
-          sprintf(data,"{\"usrId\":\"%s\",\"locate\":\"room_1\",\"state\":%d,\"sw_rqst\":0}",usrId,sw_state);
-          sprintf(data_objId,"/classes/iot_switch/%s",objectId->valuestring);
-          parseSendRequest(client, "PUT",data_objId, data, NULL);
-       }
-       else
-       {
-         printf("NO RQST \n");
-       }
-	}
-    else
-    {
-      sprintf(data,"{\"usrId\":\"%s\",\"locate\":\"room_1\",\"state\":%d,\"sw_rqst\":0}",usrId,sw_state);
-      printf("POST \n",data);
-      parseSendRequest(client, "POST","/classes/iot_switch", data, NULL);
-    } 
+		        printf("CHANGE : state:%d, rqst:%d \n",sw_state, objectState->valueint);
+		        sw_state = objectState->valueint;
+		        setSw(sw_state);
+	         }
+           sprintf(data,"{\"usrId\":\"%s\",\"locate\":\"room_1\",\"state\":%d,\"sw_rqst\":0}",usrId,sw_state);
+           sprintf(data_objId,"/classes/iot_switch/%s",objectId->valuestring);
+           parseSendRequest(client, "PUT",data_objId, data, NULL);
+        }
+        else
+        {
+          printf("NO RQST \n");
+        }
+	    }
+      else
+      {
+        sprintf(data,"{\"usrId\":\"%s\",\"locate\":\"room_1\",\"state\":%d,\"sw_rqst\":0}",usrId,sw_state);
+        printf("POST \n",data);
+        parseSendRequest(client, "POST","/classes/iot_switch", data, NULL);
+      } 
+    }
   }  
 }
 

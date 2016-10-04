@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <parse.h>
 #include "cJSON.h"
-#define PARSE_URL  "http:// 192.168.219.106:1337/parse"
+#define PARSE_URL  "http://xxx.herokuapp.com/parse"
 void mySaveCallback (ParseClient client, int error, int httpStatus, const char* httpResponseBody)
 {
   int cnt = 0;
