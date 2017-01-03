@@ -29,13 +29,13 @@ int main(void)
     
   for(i = 0; i < 360*4 ; i++)
   {
-    setsteps(1,0,0,0);
+    setStep(1,0,0,0);
     delay(10);
-    setsteps(0,1,0,0);
+    setStep(0,1,0,0);
     delay(10);
-    setsteps(0,0,1,0);
+    setStep(0,0,1,0);
     delay(10);
-    setsteps(0,0,0,1);
+    setStep(0,0,0,1);
     delay(10);
   }
   return 0;
